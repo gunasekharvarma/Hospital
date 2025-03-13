@@ -13,37 +13,64 @@ from .models import *
 @api_view(['POST'])
 def staff_login(request):
 
-    username = request.data.get("username")
-    password = request.data.get("password")
+    try:
 
-    usernames_from_query_set = StaffUser.objects.values_list('username', flat=True)
-    list_of_usernames = list(usernames_from_query_set)
+        username = request.data.get("username")
+        password = request.data.get("password")
 
-    passwords_from_query_set = StaffUser.objects.values_list('password', flat=True)
-    list_of_passwords = list(passwords_from_query_set)
+        usernames_from_query_set = StaffUser.objects.values_list('username', flat=True)
+        list_of_usernames = list(usernames_from_query_set)
 
-    #auth_staff = authenticate(request,username=username,password=password)
+        passwords_from_query_set = StaffUser.objects.values_list('password', flat=True)
+        list_of_passwords = list(passwords_from_query_set)
 
-    if (username in list_of_usernames) and (password in list_of_passwords):
+        #auth_staff = authenticate(request,username=username,password=password)
 
-        #user = auth_staff
-        user = StaffUser.objects.get(username=username)
+        if (username in list_of_usernames) and (password in list_of_passwords):
 
-        token= Token.objects.create(user=user)
+            #user = auth_staff
+            user = StaffUser.objects.get(username=username)
+
+            token= Token.objects.create(user=user)
+
+            response = {
+                'message': 'User Successfully Logged In',
+                'token': token.key
+            }
+
+            return Response(response, status=status.HTTP_200_OK)
+
+        else:
+
+            response = {
+                'message': 'Invalid Credentials'
+            }
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        response = {
+            'error' : 'Error in Login'
+        }
+        return Response(response,status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def staff_logout(request):
+    try:
+
+        token_generated = request.data.get("token_generated")
+        token = Token.objects.get(key = token_generated)
+        token.delete()
 
         response = {
-            'message': 'User Successfully Logged In',
-            'token': token.key
+            'message':'User Successfully Logged Out'
         }
-
-        return Response(response, status=status.HTTP_200_OK)
-
-    else:
-
+        return Response(response,status=status.HTTP_200_OK)
+    except Exception as e:
         response = {
-            'message': 'Invalid Credentials'
+            'error':'Error in Logout'
         }
-        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        return Response(response,status=status.HTTP_400_BAD_REQUEST)
 
 
 
