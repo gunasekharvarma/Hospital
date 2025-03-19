@@ -9,6 +9,11 @@ from .models import *
 
 
 # Create your views here.
+def login(request):
+    return render(request,'accounts/index.html')
+
+def dashboard(request):
+    return render(request,'accounts/dashboard.html')
 
 @api_view(['POST'])
 def staff_login(request):
