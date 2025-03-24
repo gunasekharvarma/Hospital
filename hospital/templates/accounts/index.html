@@ -119,7 +119,7 @@
                     console.log("User Logged in Successfully")
                     console.log(data.token);
                     
-                    setTimeout(() => window.location.href = "{% url 'dashboard' %}", 2000);
+                    setTimeout(() => window.location.href = "{% url 'dashboard' %}", 10);
                     console.log(data.token);
                 } else {
                     // Failed login
