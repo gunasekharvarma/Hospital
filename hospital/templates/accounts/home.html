@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    text-align: center;
+    padding: 50px;
+}
+
+a {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1.2rem;
+    background-color: #4a90e2;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    transition: all 0.3s ease-in-out;
+}
+
+a:hover {
+    background-color: #357ab7;
+    transform: scale(1.05);
+}
+
+div.link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+    </style>
+    <div class="link-container">
+        <a href="{% url 'login' %}">Staff Login</a>
+    </div>
+    
+</body>
+</html>

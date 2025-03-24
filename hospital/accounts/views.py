@@ -6,11 +6,16 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 
 from .models import *
+from .forms import LoginForm
 
 
 # Create your views here.
 def login(request):
-    return render(request,'accounts/index.html')
+    form = LoginForm()
+    return render(request,'accounts/index.html',{'form':form})
+
+def after_login(request):
+    return render(request,'accounts/base.html')
 
 def dashboard(request):
     return render(request,'accounts/dashboard.html')
@@ -18,9 +23,9 @@ def dashboard(request):
 @api_view(['POST'])
 def staff_login(request):
     try:
-
-        username = request.data.get("username")
-        password = request.data.get("password")
+        form = LoginForm()
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         auth_user = authenticate(request, username=username, password=password)
         user = User.objects.get(username = username)
 

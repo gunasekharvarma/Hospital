@@ -14,6 +14,7 @@ async function staffLogin(username, password) {
             console.log("Login successful:", data);
             localStorage.setItem("staffToken", data.token);
             document.getElementById("loginMessage").innerText = "Login successful!";
+            window.location.href = "accounts/dashboard.html";
 
         } else {
             console.error("Login failed:", data);
