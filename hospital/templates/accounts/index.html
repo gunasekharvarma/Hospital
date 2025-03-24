@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
@@ -12,76 +13,130 @@
 
     <style>
         body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #a1c4fd, #c2e9fb);
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-container {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 350px;
-}
+        #container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
 
-loginForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
+        #loginForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
 
-loginForm input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: #f0f4f8;
-    transition: 0.3s;
-}
+        #loginForm input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f0f4f8;
+            transition: 0.3s;
+        }
 
-loginForm input:focus {
-    border-color: #4a90e2;
-    outline: none;
-    box-shadow: 0px 0px 8px rgba(74, 144, 226, 0.5);
-}
+        #loginForm input:focus {
+            border-color: #4a90e2;
+            outline: none;
+            box-shadow: 0px 0px 8px rgba(74, 144, 226, 0.5);
+        }
 
-loginForm button {
-    width: 100%;
-    background-color: #4a90e2;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        #loginForm button {
+            width: 100%;
+            background-color: #4a90e2;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-loginForm button:hover {
-    background-color: #357ab7;
-    transform: scale(1.05);
-}
+        #loginForm button:hover {
+            background-color: #357ab7;
+            transform: scale(1.05);
+        }
+
+        #showPassword {
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #4a90e2;
+            margin-top: 5px;
+            text-decoration: underline;
+        }
     </style>
 
     <div id="container">
         <h1>Login Page</h1>
         <form id="loginForm" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <span id="showPassword">Show Password</span>
             <button type="submit">Login</button>
         </form>
-
-        <p id="loginMessage"></p>
     </div>
+
+    <script>
+        // Show password functionality
+        document.getElementById("showPassword").addEventListener("click", function() {
+            let passwordField = document.getElementById("password");
+            let type = passwordField.type === "password" ? "text" : "password";
+            passwordField.type = type;
+            this.textContent = type === "password" ? "Show Password" : "Hide Password";
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+            fetch("{% url 'loginstaff' %}", {  
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({ username: username, password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    // Successful login
+                    localStorage.setItem("auth_token", data.token);
+                    alert("Login Successful");
+                    console.log("User Logged in Successfully")
+                    console.log(data.token);
+                    
+                    setTimeout(() => window.location.href = "{% url 'dashboard' %}", 2000);
+                } else {
+                    // Failed login
+                    document.getElementById("username").value = '';
+                    document.getElementById("password").value = '';
+                    alert("No credentials found. Please try again.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+
 </body>
 </html>

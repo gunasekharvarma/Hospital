@@ -23,9 +23,9 @@ def dashboard(request):
 @api_view(['POST'])
 def staff_login(request):
     try:
-        form = LoginForm()
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        
+        username = request.data.get("username")
+        password = request.data.get("password")
         auth_user = authenticate(request, username=username, password=password)
         user = User.objects.get(username = username)
 
@@ -46,7 +46,7 @@ def staff_login(request):
             return Response(response, status=200)
 
         else:
-            return Response({'error': "Invalid Credentials"}, status=200)
+            return Response({'error': "Invalid Credentials"}, status=status.HTTP_404_NOT_FOUND)
 
 
 

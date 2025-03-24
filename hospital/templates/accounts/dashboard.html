@@ -2,15 +2,112 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #patient {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #patient input {
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #patient button {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #4a90e2;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #patient button:hover {
+            background-color: #357ab7;
+        }
+
+        #searchButton {
+            margin-left: 10px;
+            background-color: #f1c40f;
+        }
+
+        #searchButton:hover {
+            background-color: #f39c12;
+        }
+
+        #bottomRightButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        #bottomRightButton:hover {
+            background-color: #c0392b;
+        }
+    </style>
 </head>
 <body>
     <h1>Dashboard Page</h1>
-     <form id="patient" method="post">
-         <label for="phonenumber">PhoneNumber</label>
-         <input type="tel" id="phonenumber" required>
+    <form id="patient" method="post">
+        {% csrf_token %}
+        <label for="phonenumber">Phone Number</label>
+        <input type="tel" id="phonenumber" required placeholder="Enter Phone Number">
 
-         <button type="submit">Submit</button>
-     </form>
+        <!-- Search button next to the input -->
+        <button type="button" id="searchButton">Search</button>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Button at the bottom right corner -->
+    <button id="bottomRightButton">Update Details</button>
+
+    <script>
+        document.getElementById("searchButton").addEventListener("click", function() {
+            const phoneNumber = document.getElementById("phonenumber").value;
+            if (phoneNumber) {
+                alert("Searching for: " + phoneNumber);
+            } else {
+                alert("Please enter a phone number to search.");
+            }
+        });
+
+        document.getElementById("patient").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const phoneNumber = document.getElementById("phonenumber").value;
+            const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+            // Handle form submission
+            alert("Phone number submitted: " + phoneNumber);
+        });
+    </script>
 </body>
 </html>
