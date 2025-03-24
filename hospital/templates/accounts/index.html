@@ -88,19 +88,12 @@
             {% csrf_token %}
             <input type="text" id="username" name="username" placeholder="Username" required>
             <input type="password" id="password" name="password" placeholder="Password" required>
-            <span id="showPassword">Show Password</span>
             <button type="submit">Login</button>
         </form>
     </div>
 
     <script>
-        // Show password functionality
-        document.getElementById("showPassword").addEventListener("click", function() {
-            let passwordField = document.getElementById("password");
-            let type = passwordField.type === "password" ? "text" : "password";
-            passwordField.type = type;
-            this.textContent = type === "password" ? "Show Password" : "Hide Password";
-        });
+        
 
         document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault(); 

@@ -14,11 +14,9 @@ def login(request):
     form = LoginForm()
     return render(request,'accounts/index.html',{'form':form})
 
-def after_login(request):
+def dashboard(request):
     return render(request,'accounts/base.html')
 
-def dashboard(request):
-    return render(request,'accounts/dashboard.html')
 
 @api_view(['POST'])
 def staff_login(request):
