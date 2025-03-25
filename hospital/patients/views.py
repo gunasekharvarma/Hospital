@@ -6,16 +6,20 @@ from rest_framework import status
 from rest_framework.decorators import permission_classes
 
 from .models import *
-
+from django.shortcuts import render
 
 # Create your views here.
+
+def update(request):
+     return render(request,'accounts/update.html')
+
+def create(request):
+    return render(request,'accounts/create.html')
 
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def get_details_of_the_patient(request):
-
-    phone_number = request.data.get("phone_number")
+def get_details_of_the_patient(request,phone_number):
 
     if not hasattr(request.user,"staff"):
         return Response({'message':'Login Required'})
@@ -25,6 +29,7 @@ def get_details_of_the_patient(request):
         if phone_number:
 
             patient = Patients.objects.get(phone_number=phone_number)
+            
 
             response = {
                 'Patient Id' : patient.id,
@@ -123,13 +128,17 @@ def create_patient(request):
 
          return Response(response,status=status.HTTP_200_OK)
     else:
-
+        user = User.objects.get()
         patient = Patients(id = uuid.uuid4(),phone_number=phone_number,email=email,first_name=first_name,last_name=last_name,age=age)
+        patient.updated_by = request.user
         patient.save()
+
+        #patient = Patients.objects.get(phone_number=phone_number)
 
         response = {
             'message' : 'Patient is Successfully Created',
-            'patient_id' : patient.id
+            'patient_id' : patient.id,
+            'Updated By' : patient.updated_by
         }
 
         return Response(response,status=status.HTTP_200_OK)

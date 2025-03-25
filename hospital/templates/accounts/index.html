@@ -115,11 +115,12 @@
                 if (data.token) {
                     // Successful login
                     localStorage.setItem("auth_token", data.token);
-                    alert("Login Successful");
+                    //alert("Login Successful");
                     console.log("User Logged in Successfully")
                     console.log(data.token);
+                    alert(data.token)
                     
-                    setTimeout(() => window.location.href = "{% url 'dashboard' %}", 10);
+                    window.location.href = "{% url 'dashboard' %}"
                     console.log(data.token);
                 } else {
                     // Failed login
