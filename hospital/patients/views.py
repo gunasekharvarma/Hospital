@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import permission_classes
-
+from datetime import datetime
 
 from .models import *
 from django.shortcuts import render
@@ -34,16 +34,19 @@ def get_details_of_the_patient(request,phone_number):
             
 
             response = {
-                'Patient Id' : patient.id,
-                'Patient First Name' : patient.first_name,
-                'Patient Last Name': patient.last_name,
-                'Patient Email' : patient.email,
-                'Patient Phone number' : patient.phone_number,
-                'Patient Health Issue' : patient.medical_issue,
-                'Patient Last Visited' : patient.last_visited,
-                'Patient Doctor' : patient.assigned_doctor,
-                'Recent Bill' : patient.recent_bill,
-                'Updated By' : patient.updated_by.username
+                'Patient_Id' : patient.id,
+                'Patient_FirstName' : patient.first_name,
+                'Patient_LastName': patient.last_name,
+                'Patient_Age': patient.age,
+                'Patient_Email' : patient.email,
+                'Patient_BloodGroup':patient.blood_group,
+                'Patient_Phonenumber' : patient.phone_number,
+                'Patient_HealthIssue' : patient.medical_issue,
+                'Patient_Medication' : patient.medication,
+                'Patient_LastVisited' : patient.last_visited,
+                'Patient_Doctor' : patient.assigned_doctor,
+                'Recent_Bill' : patient.recent_bill,
+                'Updated_By' : patient.updated_by.username
             }
 
             return Response(response,status=status.HTTP_200_OK)
@@ -61,7 +64,10 @@ def get_details_of_the_patient(request,phone_number):
 def update_details_of_the_patient(request):
     try:
         phone_number = request.data.get("phone_number")
-        patient = Patients.objects.get(phone_number = phone_number)
+        blood_group = request.data.get("blood_group")
+        medical_issue = request.data.get("medical_issue")
+        medication = request.data.get("medication")
+        recent_bill = request.data.get("recent_bill")
 
     except Exception as e:
             response = {
@@ -73,37 +79,46 @@ def update_details_of_the_patient(request):
         return Response({
             'Message' : "Only Staff Logged In members can update the data"
         })
+    patient = Patients.objects.filter(phone_number = phone_number).update(
+            blood_group = blood_group,
+            medical_issue = medical_issue,
+            medication = medication,
+            recent_bill = recent_bill,
+            updated_by = request.user.id
+            )
+    
+    
 
-    patient = Patients.objects.get(phone_number=phone_number)
-    data = request.data
-    updated_fields = []
+    #updated_fields = []
 
-    if "blood_group" in data and data["blood_group"]:
-        patient.blood_group = data["blood_group"]
-        updated_fields.append("first_name")
+    # if "blood_group" in data and data["blood_group"]:
+    #     patient.blood_group = data["blood_group"]
+    #     updated_fields.append("blood_group")
 
-    if "medical_issue" in data and data["medical_issue"]:
-        patient.medical_issue = data["medical_issue"]
-        updated_fields.append("medical_issue")
+    # if "medical_issue" in data and data["medical_issue"]:
+    #     patient.medical_issue = data["medical_issue"]
+    #     updated_fields.append("medical_issue")
 
-    if "medication" in data and data["medication"]:
-        patient.medication = data["medication"]
-        updated_fields.append("medication")
+    # if "medication" in data and data["medication"]:
+    #     patient.medication = data["medication"]
+    #     updated_fields.append("medication")
 
-    if "recent_bill" in data and data["recent_bill"]:
-        patient.recent_bill = data["recent_bill"]
-        updated_fields.append("recent_bill")
+    # if "recent_bill" in data and data["recent_bill"]:
+    #     patient.recent_bill = data["recent_bill"]
+    #     updated_fields.append("recent_bill")
 
-    if updated_fields:
+    
 
-        patient.updated_by = request.user
-        patient.save()
+    # if updated_fields:
 
-        response = {
-            'message' : 'Patient Updated Sucessfully',
-            "Updated Fields" : updated_fields,
-            "Updated By" : request.user.username
-        }
+    #     patient.updated_by = request.user
+    #     patient.last_visited = datetime.now()
+    #     patient.save()
+
+    response = {
+        'message' : 'Patient Updated Sucessfully',
+        #"Updated By" : request.user.username
+    }
 
     return Response(response,status=status.HTTP_200_OK)
 
