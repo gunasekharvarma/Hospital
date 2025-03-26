@@ -96,6 +96,8 @@
             <ul>
                 <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
                 <li><a href="{% url 'create' %}">Create</a></li>
+                <!-- <li><a href="{% url 'login' %}">Logout</a></li> -->
+                <li><a href="javascript:void(0);" onclick="logout()">Logout</a></li>
             </ul>
         </div>
 
@@ -106,6 +108,22 @@
     </div>
     
     <script>
+
+
+    
+    function logout() {
+        
+        localStorage.removeItem('auth_token');
+
+        
+        alert("You have been logged out.");
+
+        
+        window.location.href = "{% url 'login' %}";
+    }
+
+
+
         let token = localStorage.getItem('auth_token')
         if (!token) {
     alert("You are not logged in. Please log in first.");
@@ -141,7 +159,7 @@
             })
             .catch(error => {
                 console.error("Error Fetching Details");
-                alert("Error Fetching Patient Details")
+                alert("Patient Not Available, Please create!!!")
             })
 
         })

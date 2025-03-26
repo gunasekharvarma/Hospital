@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import permission_classes
 
+
 from .models import *
 from django.shortcuts import render
 
@@ -12,6 +13,7 @@ from django.shortcuts import render
 
 def update(request):
      return render(request,'accounts/update.html')
+
 
 def create(request):
     return render(request,'accounts/create.html')
