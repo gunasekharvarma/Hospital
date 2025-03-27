@@ -68,6 +68,7 @@ def update_details_of_the_patient(request):
         medical_issue = request.data.get("medical_issue")
         medication = request.data.get("medication")
         recent_bill = request.data.get("recent_bill")
+        assigned_doctor = request.data.get("assigned_doctor")
 
     except Exception as e:
             response = {
@@ -84,6 +85,7 @@ def update_details_of_the_patient(request):
             medical_issue = medical_issue,
             medication = medication,
             recent_bill = recent_bill,
+            assigned_doctor = assigned_doctor,
             updated_by = request.user.id
             )
     
@@ -134,6 +136,11 @@ def create_patient(request):
     last_name = request.data.get("last_name")
     age = request.data.get("age")
 
+    if not hasattr(request.user,"staff"):
+        return Response({
+            'Message' : "Only Staff Logged In members can update the data"
+        })
+
     phone_numbers = Patients.objects.values_list('phone_number',flat=True)
     list_of_phone_numbers = list(phone_numbers)
 
@@ -143,22 +150,18 @@ def create_patient(request):
              'message' : 'Mobile number Already Registered'
          }
 
-         return Response(response,status=status.HTTP_200_OK)
-    else:
-        user = User.objects.get()
-        patient = Patients(id = uuid.uuid4(),phone_number=phone_number,email=email,first_name=first_name,last_name=last_name,age=age)
-        patient.updated_by = request.user
-        patient.save()
+         return Response(response,status=status.HTTP_400_BAD_REQUEST)
+    
+        
+    patient = Patients.objects.create(id = uuid.uuid4(),phone_number=phone_number,email=email,first_name=first_name,last_name=last_name,age=age,updated_by = request.user)
+    patient.save()
+    response = {
+        'message' : 'Patient is Successfully Created',
+        'patient_id' : patient.id,
+        'Updated By' : patient.updated_by.username
+    }
 
-        #patient = Patients.objects.get(phone_number=phone_number)
-
-        response = {
-            'message' : 'Patient is Successfully Created',
-            'patient_id' : patient.id,
-            'Updated By' : patient.updated_by
-        }
-
-        return Response(response,status=status.HTTP_200_OK)
+    return Response(response,status=status.HTTP_200_OK)
 
 
 

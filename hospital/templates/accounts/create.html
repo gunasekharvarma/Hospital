@@ -10,10 +10,11 @@
     <h1>Create Patient Details</h1>
 
     
-    <form id="createPatientForm">
+    <form id="createPatientForm" method="post">
+        {% csrf_token %}
         <div>
             <label for="phoneNumber">Phone Number:</label>
-            <input type="text" id="phoneNumber" name="phone_number" required>
+            <input type="number" id="phoneNumber" name="phone_number" required>
         </div>
 
         <div>
@@ -40,6 +41,101 @@
        
         <button type="submit" id="submitButton">Submit</button>
     </form>
+
+    <script>
+
+        // document.getElementById("createPatientForm").addEventListener("submit", function(event){
+        //     event.preventDefault();
+
+        //     let phone_number = document.getElementById("phoneNumber").value;
+        //     let first_name = document.getElementById("firstName").value;
+        //     let last_name = document.getElementById("lastName").value;
+        //     let age = document.getElementById("patientAge").value;
+        //     let email = document.getElementById("email").value;
+        //     let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+        //     let data = {
+        //         first_name : first_name,
+        //         last_name : last_name,
+        //         email : email
+        //     }
+
+
+        //     fetch("{% url 'createpatient' %}",{
+        //             method : "POST",
+        //             headers : {
+        //                 "Content-Type" : 'application/json',
+        //                 'Authorization' : `Token ${token}`,
+        //                 "X-CSRFToken": csrfToken
+        //             },
+        //             body : JSON.stringify(data)
+        //         }
+        //     )
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         if (data){
+        //             console.log(data);
+        //             alert(data);
+        //             console.log(data);
+        //         }
+        //         else{
+        //             alert("Patient is Not created");
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.log("Error in Patient Creation",error);
+        //         alert("Patient Already exists!!");
+        //     })
+
+        // });
+
+        document.getElementById("createPatientForm").addEventListener("submit", function(event){
+    event.preventDefault();
+
+    // Getting the input values
+    let phone_number = parseInt(document.getElementById("phoneNumber").value); // Convert to number
+    let first_name = document.getElementById("firstName").value; // String
+    let last_name = document.getElementById("lastName").value; // String
+    let age = parseInt(document.getElementById("patientAge").value); // Convert to number
+    let email = document.getElementById("email").value; // String
+    let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+    // Creating the data object with appropriate types
+    let data = {
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        phone_number: phone_number, // number
+        age: age // number
+    }
+
+    // Making the fetch request
+    fetch("{% url 'createpatient' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": 'application/json',
+            'Authorization': `Token ${token}`,
+            "X-CSRFToken": csrfToken
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data) {
+            console.log(data);
+            alert("Patient Created Successfully");
+        } else {
+            alert("Patient Already Exists");
+        }
+    })
+    .catch(error => {
+        console.log("Error in Patient Creation", error);
+        alert("Error!!!!!!!!");
+    })
+})
+
+
+    </script>
 
 {% endblock %}
 

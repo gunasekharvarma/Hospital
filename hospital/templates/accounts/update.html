@@ -12,11 +12,12 @@
     
     <form id="updatePatientForm" method="post">
         {% csrf_token %}
-        <input type="text" id="phoneNumber" name="phone" placeholder="Phone Number">
+        <input type="text" id="phoneNumber" name="phone" placeholder="Phone Number" required>
         <input type="text" id="bloodGroup" name="bloodGroup" placeholder="Blood Group" >
         <input type="text" id="medicalIssue" name="medicalIssue" placeholder="Medical Issue" >
         <input type="text" id="medication" name="medication" placeholder="Medication" >
         <input type="number" id="recentBill" name="recentBill" placeholder="Recent Bill" >
+        <input type="text" id="assignedDoctor" name="assignedDoctor" placeholder="Assigned Doctor" >
         <button type="submit">Update</button>
     </form>
 
@@ -30,11 +31,12 @@
 
             event.preventDefault();
 
-            let phone_number = document.getElementById("phoneNumber").value;
+            let phone_number = parseInt(document.getElementById("phoneNumber").value);
             let blood_group = document.getElementById("bloodGroup").value;
             let medical_issue = document.getElementById("medicalIssue").value;
             let medication = document.getElementById("medication").value;
-            let recent_bill = document.getElementById("recentBill").value;
+            let recent_bill = parseInt(document.getElementById("recentBill").value);
+            let assigned_doctor = document.getElementById("assignedDoctor").value;
             let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
                     
             let data = {
@@ -42,7 +44,8 @@
                 blood_group : blood_group,
                 medical_issue : medical_issue,
                 medication : medication,
-                recent_bill : recent_bill
+                recent_bill : recent_bill,
+                assigned_doctor : assigned_doctor
             }
 
             fetch("{% url 'updatedetails' %}",{
