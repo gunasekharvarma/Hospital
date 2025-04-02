@@ -124,8 +124,18 @@
         if (data) {
             console.log(data);
             alert("Patient Created Successfully");
+            phone_number = (document.getElementById("phoneNumber").value) = ''; 
+            first_name = document.getElementById("firstName").value = '';
+            last_name = document.getElementById("lastName").value = ''; 
+            age = (document.getElementById("patientAge").value) = ''; 
+            email = document.getElementById("email").value = '';
         } else {
             alert("Patient Already Exists");
+            phone_number = (document.getElementById("phoneNumber").value) = ''; 
+            first_name = document.getElementById("firstName").value = '';
+            last_name = document.getElementById("lastName").value = ''; 
+            age = (document.getElementById("patientAge").value) = ''; 
+            email = document.getElementById("email").value = '';
         }
     })
     .catch(error => {

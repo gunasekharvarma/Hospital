@@ -64,9 +64,21 @@
                     console.log(data)
                     alert("Patient Details Updated Sucessfully");
                     console.log(data)
+                    phone_number = (document.getElementById("phoneNumber").value) = '';
+                    blood_group = document.getElementById("bloodGroup").value = '';
+                    medical_issue = document.getElementById("medicalIssue").value = '';
+                    medication = document.getElementById("medication").value = '';
+                    recent_bill = (document.getElementById("recentBill").value) = '';
+                    assigned_doctor = document.getElementById("assignedDoctor").value = '';
                 }
                 else{
                     alert("Patient Updation Failed");
+                    phone_number = (document.getElementById("phoneNumber").value) = '';
+                    blood_group = document.getElementById("bloodGroup").value = '';
+                    medical_issue = document.getElementById("medicalIssue").value = '';
+                    medication = document.getElementById("medication").value = '';
+                    recent_bill = (document.getElementById("recentBill").value) = '';
+                    assigned_doctor = document.getElementById("assignedDoctor").value = '';
                 }
             })
             .catch(error => {
