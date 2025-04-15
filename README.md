@@ -1,6 +1,6 @@
 # Hospital Management System
 
-This project is for effectively managing staff and patients in a hospital.
+A Django-based web application designed to streamline hospital operations by effectively managing staff and patient information.
 
 ## Features
 
@@ -29,7 +29,32 @@ This project is for effectively managing staff and patients in a hospital.
 5. CSS  
 6. JavaScript  
 7. Template Engine  
-8. Jinja Syntaxing  
+8. Jinja Syntaxing
+
+### 🏠 Home Page
+![Capture](https://github.com/user-attachments/assets/a443ec7f-18a6-43af-9ea9-b2b6455d9d56)
+
+
+### 🔐 Login Page
+![Capture1](https://github.com/user-attachments/assets/b1a31e0a-2584-40a9-8ab2-556a3437b8a0)
+
+
+### 📊 Dashboard
+![Capture2](https://github.com/user-attachments/assets/97f46589-1f1e-4864-b7b9-f83929aae5d4)
+
+
+### 📋 Patient Details Page
+![Capture5](https://github.com/user-attachments/assets/2dbe521c-d54b-492d-a9df-313fc12f7931)
+
+
+### ➕ Add Patient Page
+![Capture3](https://github.com/user-attachments/assets/bc29c3ca-90aa-434e-bd99-29510ac53458)
+
+
+### 🔄 Update Patient Page
+![Capture4](https://github.com/user-attachments/assets/0f2c724f-0c9b-4c88-a8ca-846eb474b917)
+
+
 
 ## Getting Started
 
@@ -80,6 +105,3 @@ This project is for effectively managing staff and patients in a hospital.
 
 Contributions are welcome! Feel free to fork the project and submit a pull request.
 
-## License
-
-This project is licensed under the MIT License.
